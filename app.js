@@ -75,7 +75,7 @@ function matchCard(m, opts = {}){
     <div class="cols hdr"><span></span><span></span><span>G1</span><span>G2</span></div>
     ${row(0,"red")}${row(1,"blue")}${foot}</div>`;
 }
-function srow(m){
+function srow(m, opts = {}){
   const st = mState(m), [r,b] = wins(m), gs = games(m), t = today(), d = mDate(m);
   const gtxt = g => entered(g) ? `${g[0] ?? 0}-${g[1] ?? 0}` : "";
   let res = "";
@@ -83,7 +83,7 @@ function srow(m){
   else if (st === "partial") res = (d === t ? '<span class="live">LIVE</span> · ' : "make-up · ") + [gtxt(gs[0]), gtxt(gs[1])].filter(Boolean).join(", ");
   else if (d < t) res = "make-up";
   const inner = `<span class="t">${SLOTS[m.slot]}</span><span>${esc(tn(m.red))} <span class="vs">vs</span> ${esc(tn(m.blue))}</span><span class="res">${res}</span>`;
-  return commish
+  return commish && !opts.view
     ? `<button class="srow ${isMine(m) ? "mine" : ""}" data-edit="${m.week}-${m.slot}">${inner}</button>`
     : `<div class="srow ${isMine(m) ? "mine" : ""}">${inner}</div>`;
 }
@@ -103,7 +103,7 @@ function renderTonight(){
       <div class="h1-sub">${ms.length} matches · 1 table · first puck ${SLOTS[0]}</div>`;
     h += ms.map((m,i) => matchCard(m, {upNext: i === up})).join("");
     if (next){
-      h += `<div class="eyebrow gap">Next Tuesday · Week ${next}</div><div class="card" style="overflow:hidden">${weekMatches(next).map(srow).join("")}</div>`;
+      h += `<div class="eyebrow gap">Next Tuesday · Week ${next}</div><div class="card" style="overflow:hidden">${weekMatches(next).map(m => srow(m, {view:true})).join("")}</div>`;
     }
   } else if (next){
     const ms = weekMatches(next);
@@ -391,4 +391,39 @@ async function start(){
   }
 }
 start();
+
+/* ---------- now and then a Bend weight slides up the board (decoration only) ---------- */
+(function slider(){
+  const zone = $(".zones");
+  if (!zone || !zone.animate || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const p = document.createElement("span");
+  p.className = "bpuck slider"; p.setAttribute("aria-hidden", "true");
+  p.innerHTML = '<i><img src="logo.png" alt=""></i>';
+  zone.appendChild(p);
+  // Lanes that miss the four resting weights: [left, resting top in px]
+  const lanes = [["84%", 2], ["40%", 74], ["84%", 38]];
+  let n = 0;
+  async function shot(){
+    if (document.visibilityState !== "visible"){ setTimeout(shot, 4000); return; }
+    const [left, top] = lanes[n % lanes.length], red = n % 2 === 0;
+    p.classList.toggle("red", red); p.classList.toggle("blue", !red);
+    p.style.left = left; p.style.top = top + "px";
+    const dist = zone.offsetHeight - top + 8, spin = (red ? 1 : -1) * (18 + Math.random() * 30);
+    n++;
+    p.getAnimations().forEach(a => a.cancel());
+    try {
+      await p.animate([
+        {transform:`translateY(${dist}px) rotate(0deg)`, opacity:1},
+        {transform:`translateY(0) rotate(${spin}deg)`, opacity:1}
+      ], {duration:1800, easing:"cubic-bezier(.12,.8,.25,1)", fill:"forwards"}).finished;
+      await p.animate([
+        {transform:`rotate(${spin}deg)`, opacity:1},
+        {transform:`rotate(${spin}deg)`, opacity:1, offset:.8},
+        {transform:`rotate(${spin}deg)`, opacity:0}
+      ], {duration:3400, fill:"forwards"}).finished;
+    } catch (e) {}
+    setTimeout(shot, 5000 + Math.random() * 4000);
+  }
+  setTimeout(shot, 2500);
+})();
 })();

@@ -46,7 +46,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hero-sub{font-size:13px;color:var(--muted);margin-top:6px;letter-spacing:.02em}
 
 /* painted scoring zones, with Bend weights resting on them */
-.zones{position:relative;display:grid;grid-template-rows:repeat(3,36px);border-bottom:3px solid rgba(60,30,10,.55)}
+.zones{position:relative;overflow:hidden;display:grid;grid-template-rows:repeat(3,36px);border-bottom:3px solid rgba(60,30,10,.55)}
 .zones>div{display:flex;align-items:center;justify-content:center;border-top:2px solid rgba(60,30,10,.45);
   font:600 17px Oswald,sans-serif;color:rgba(70,35,10,.5);letter-spacing:.1em}
 .zones>div:first-child{border-top:0;background:rgba(60,30,10,.08)}
@@ -58,6 +58,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .bpuck.red i{background:radial-gradient(circle at 40% 32%,#ff6f64,var(--red) 55%,#8c1f19)}
 .bpuck.blue i{background:radial-gradient(circle at 40% 32%,#7fb0ec,var(--blue) 55%,#1b4478)}
 .bpuck img{width:27px;height:27px}
+.bpuck.slider{pointer-events:none;opacity:0;will-change:transform,opacity}
 
 /* views */
 .view{display:none;padding:14px 12px 0}
@@ -225,8 +226,8 @@ button.srow:active{background:rgba(255,255,255,.06)}
   </header>
   <div class="zones" aria-hidden="true">
     <div>3</div><div>2</div><div>1</div>
-    <span class="bpuck blue" style="left:12%;top:-1px;transform:rotate(-14deg)"><i><img src="logo.png" alt=""></i></span>
-    <span class="bpuck red" style="left:70%;top:1px;transform:rotate(9deg)"><i><img src="logo.png" alt=""></i></span>
+    <span class="bpuck blue" style="left:12%;top:1px;transform:rotate(-14deg)"><i><img src="logo.png" alt=""></i></span>
+    <span class="bpuck red" style="left:70%;top:2px;transform:rotate(9deg)"><i><img src="logo.png" alt=""></i></span>
     <span class="bpuck red" style="left:28%;top:36px;transform:rotate(22deg)"><i><img src="logo.png" alt=""></i></span>
     <span class="bpuck blue" style="left:60%;top:55px;transform:rotate(-6deg)"><i><img src="logo.png" alt=""></i></span>
   </div>
