@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parlour House Shuffle</title>
+<meta name="description" content="Tuesday-night shuffleboard league at The Bend's Parlour House, Wilmington NC: standings, schedule and live scores.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#11262a">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Oswald:wght@500;600&family=Yellowtail&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wall:#11262a; --wall-2:#183338;
+  --card:rgba(14,31,34,.95); --card-2:rgba(255,255,255,.05); --line:rgba(255,255,255,.09);
+  --cream:#f5ecdc; --muted:#a7bab6; --dim:#6f8784;
+  --brass:#d4aa55; --brass-soft:rgba(212,170,85,.16); --teal:#63b8a6;
+  --red:#d23c33; --blue:#3474bd; --gutter:#0b1719;
+  --wood-a:#b7733c; --wood-b:#d49a5e; --wood-c:#dfab6f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--wall);color:var(--cream);font:15px/1.4 "DM Sans",system-ui,sans-serif;min-height:100vh}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+[hidden]{display:none!important}
+
+/* the page column is the playing surface */
+.room{min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#1d3d42 0%,transparent 60%),var(--wall)}
+.table{position:relative;max-width:480px;margin:0 auto;min-height:100vh;border-inline:8px solid var(--gutter);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='600'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.035 0.0018' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.17 0 0 0 0 0.05 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
+    linear-gradient(90deg,var(--wood-a),var(--wood-b) 18%,var(--wood-c) 50%,var(--wood-b) 82%,var(--wood-a));
+  box-shadow:inset 7px 0 10px -6px rgba(0,0,0,.55),inset -7px 0 10px -6px rgba(0,0,0,.55);padding-bottom:96px}
+
+/* hero */
+.hero{position:relative;height:230px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;
+  background:linear-gradient(180deg,rgba(10,24,26,.2) 0%,rgba(10,24,26,.5) 55%,rgba(10,24,26,.96) 100%),url(table.jpg) center 62%/cover}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.logo{width:66px;height:66px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
+.whoami{font-size:12px;background:rgba(10,24,26,.8);border:1px solid var(--line);padding:6px 10px;border-radius:999px;display:flex;gap:6px;align-items:center;backdrop-filter:blur(4px);min-height:32px}
+.whoami b{color:var(--brass);font-weight:700}
+.script{font-family:Yellowtail,cursive;font-size:42px;line-height:1;color:var(--cream);text-shadow:0 2px 10px rgba(0,0,0,.5)}
+.hero-sub{font-size:13px;color:var(--muted);margin-top:6px;letter-spacing:.02em}
+
+/* painted scoring zones, with Bend weights resting on them */
+.zones{position:relative;display:grid;grid-template-rows:repeat(3,36px);border-bottom:3px solid rgba(60,30,10,.55)}
+.zones>div{display:flex;align-items:center;justify-content:center;border-top:2px solid rgba(60,30,10,.45);
+  font:600 17px Oswald,sans-serif;color:rgba(70,35,10,.5);letter-spacing:.1em}
+.zones>div:first-child{border-top:0;background:rgba(60,30,10,.08)}
+.bpuck{position:absolute;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 34% 28%,#fff 0,#e6e9eb 16%,#a3abb1 52%,#5d656b 100%);
+  box-shadow:0 3px 4px rgba(50,25,5,.55),0 0 0 1px rgba(40,40,40,.25)}
+.bpuck i{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.35),inset 0 -1px 2px rgba(0,0,0,.45)}
+.bpuck.red i{background:radial-gradient(circle at 40% 32%,#ff6f64,var(--red) 55%,#8c1f19)}
+.bpuck.blue i{background:radial-gradient(circle at 40% 32%,#7fb0ec,var(--blue) 55%,#1b4478)}
+.bpuck img{width:27px;height:27px}
+
+/* views */
+.view{display:none;padding:14px 12px 0}
+.view.on{display:block}
+.eyebrow{font:600 12px Oswald,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#3b2310;opacity:.85;margin:6px 4px 8px}
+.h1{font:600 28px/1.05 Oswald,sans-serif;color:#2a170a;margin:0 4px 2px;letter-spacing:.01em}
+.h1-sub{color:#4a2e17;font-size:13px;margin:0 4px 12px;font-weight:500}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 20px rgba(50,22,4,.35);margin-bottom:10px}
+.pad{padding:14px}
+.gap{margin-top:18px}
+
+/* match card */
+.match{padding:12px 14px}
+.m-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px}
+.time{font:600 15px Oswald,sans-serif;letter-spacing:.04em}
+.pill{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--card-2);color:var(--muted);white-space:nowrap}
+.pill.live{background:rgba(210,60,51,.2);color:#ff8b82}
+.pill.next{background:var(--brass-soft);color:var(--brass)}
+.pill.owed{background:rgba(99,184,166,.15);color:var(--teal)}
+.cols{display:grid;grid-template-columns:22px 1fr 34px 34px;align-items:center;column-gap:8px}
+.cols.hdr{font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.cols.hdr span:nth-child(n+3){text-align:center}
+.trow{padding:5px 0}
+.tname{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trow.won .tname{font-weight:700}
+.g{text-align:center;font:500 18px Oswald,sans-serif;color:var(--dim)}
+.g.w{color:var(--cream)}
+.g.empty{font-size:14px}
+.m-foot{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mine{border-color:rgba(212,170,85,.55);box-shadow:0 0 0 1px rgba(212,170,85,.25),0 8px 20px rgba(50,22,4,.35)}
+.tag{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+
+/* small pucks in cards */
+.puck{width:20px;height:20px;border-radius:50%;position:relative;
+  background:radial-gradient(circle at 35% 30%,#fff 0,#d9dde0 18%,#8d959b 60%,#5d656b 100%);box-shadow:0 1px 2px rgba(0,0,0,.6)}
+.puck::after{content:"";position:absolute;inset:4px;border-radius:50%}
+.puck.red::after{background:radial-gradient(circle at 40% 35%,#ff7a70,var(--red) 60%,#8c1f19)}
+.puck.blue::after{background:radial-gradient(circle at 40% 35%,#82b3ee,var(--blue) 60%,#1b4478)}
+
+/* buttons */
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 14px;border-radius:10px;background:var(--card-2);border:1px solid var(--line);font-weight:500;font-size:14px;min-height:44px}
+.btn.primary{background:var(--brass);color:#24160a;border-color:transparent;font-weight:700}
+.btn.ghost{background:transparent}
+.btn.block{width:100%;justify-content:center}
+.btn.sm{padding:7px 11px;min-height:36px;font-size:13px}
+.btn[aria-pressed="true"]{border-color:var(--brass);color:var(--brass)}
+.ico{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+.note{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted)}
+.note .ico{color:var(--brass);margin-top:1px}
+.note b{color:var(--cream)}
+
+/* standings */
+.stand{width:100%;border-collapse:collapse;font-size:14px}
+.stand th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:700;text-align:right;padding:10px 6px 8px}
+.stand th:nth-child(2){text-align:left}
+.stand td{padding:10px 6px;border-top:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+.stand td:nth-child(1){text-align:center;color:var(--dim);width:26px;font:600 14px Oswald,sans-serif}
+.stand td:nth-child(2){text-align:left;font-weight:500;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}
+.stand td.wl{font:600 15px Oswald,sans-serif}
+.stand td.pos{color:#8fd6b5}.stand td.neg{color:#f0928a}
+.stand tr.me td{background:var(--brass-soft)}
+.stand tr.me td:nth-child(2){color:var(--brass)}
+
+/* schedule */
+details.week{overflow:hidden}
+details.week summary{list-style:none;cursor:pointer;padding:13px 14px;display:flex;justify-content:space-between;align-items:center}
+details.week summary::-webkit-details-marker{display:none}
+.wk{font:600 16px Oswald,sans-serif;letter-spacing:.03em}
+.wk small{font:500 13px "DM Sans",sans-serif;color:var(--muted);margin-left:6px;letter-spacing:0}
+.chev{transition:transform .2s;color:var(--dim)}
+details[open] .chev{transform:rotate(180deg)}
+.srow{display:grid;grid-template-columns:44px 1fr auto;gap:8px;padding:9px 14px;border-top:1px solid var(--line);font-size:14px;align-items:center;width:100%;text-align:left}
+.srow .t{font:500 13px Oswald,sans-serif;color:var(--muted)}
+.srow .res{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap}
+.srow .res b{color:var(--cream);font-weight:700}
+.srow .res .live{color:#ff8b82;font-weight:700}
+.srow.mine{background:var(--brass-soft)}
+.card>.srow:first-child{border-top:0}
+button.srow:active{background:rgba(255,255,255,.06)}
+.vs{color:var(--dim)}
+.milestone{display:flex;gap:12px;align-items:center;padding:13px 14px}
+.milestone .ico{width:22px;height:22px;color:var(--brass)}
+.milestone .sub{color:var(--muted);font-size:13px}
+
+/* teams */
+.team{padding:12px 14px}
+.team-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.team h3{font:600 17px Oswald,sans-serif;letter-spacing:.02em}
+.team p{color:var(--muted);font-size:13px;margin-top:2px}
+
+/* dues */
+.prog{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:10px}
+.prog i{display:block;height:100%;width:0;background:var(--brass);transition:width .25s}
+.payrow{display:flex;align-items:center;gap:12px;width:100%;padding:10px 0;border-top:1px solid var(--line);text-align:left;min-height:48px}
+.payrow:first-of-type{border-top:0;margin-top:4px}
+.box{width:24px;height:24px;border-radius:7px;border:2px solid var(--dim);display:grid;place-items:center;flex:none}
+.payrow.paid .box{background:var(--brass);border-color:var(--brass);color:#24160a}
+.payrow .who{flex:1;font-weight:500}
+.payrow .st{font-size:12px;color:var(--dim)}
+.payrow.paid .st{color:var(--brass)}
+.payrow[disabled]{opacity:.45;cursor:default}
+
+/* tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(9,21,23,.97);border-top:1px solid var(--line);
+  padding:6px 8px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(8px)}
+.tabbar-in{max-width:480px;margin:0 auto;display:grid;grid-auto-flow:column;grid-auto-columns:1fr}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;font-size:11px;font-weight:500;color:var(--dim);min-height:48px}
+.tab .ico{width:22px;height:22px}
+.tab.on{color:var(--brass)}
+
+/* bottom sheets */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:30;display:none;align-items:flex-end;justify-content:center}
+.scrim.on{display:flex}
+.sheet{width:100%;max-width:480px;background:var(--wall-2);border-radius:20px 20px 0 0;padding:10px 16px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--line);max-height:92vh;overflow:auto}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--dim);margin:0 auto 12px}
+.sheet h2{font:600 22px Oswald,sans-serif;letter-spacing:.02em}
+.sheet .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:rgba(0,0,0,.25);border-radius:10px;padding:3px;margin-bottom:12px}
+.seg button{padding:9px;border-radius:8px;font-weight:700;font-size:13px;color:var(--muted)}
+.seg button.on{background:var(--card);color:var(--cream)}
+.scorer{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.side{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center;min-width:0}
+.side .nm{display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;font-size:14px;min-height:22px}
+.side .nm span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.big{display:block;width:100%;background:transparent;border:0;border-radius:10px;color:var(--cream);text-align:center;
+  font:600 64px/1.1 Oswald,sans-serif;margin:6px 0 8px;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.big::-webkit-outer-spin-button,.big::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.big:focus{outline:2px solid var(--brass-soft)}
+.big::placeholder{color:var(--dim)}
+.side.lead .big{color:var(--brass)}
+.adds{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.adds button{background:var(--card-2);border:1px solid var(--line);border-radius:10px;padding:10px 0;font:600 16px Oswald,sans-serif;min-height:46px}
+.adds button:active{background:var(--brass);color:#24160a}
+.minus{margin-top:6px;width:100%;padding:8px;border-radius:10px;font-size:12px;color:var(--muted);border:1px dashed var(--line);min-height:38px}
+.banner{margin:12px 0 0;padding:12px;border-radius:12px;background:var(--brass-soft);border:1px solid rgba(212,170,85,.4);font-size:14px}
+.banner.err{background:rgba(210,60,51,.15);border-color:rgba(210,60,51,.45)}
+.savestate{font-size:12px;color:var(--muted);text-align:center;margin-top:10px;min-height:16px}
+.savestate.err{color:#ff8b82;font-weight:700}
+.field{display:block;margin-bottom:12px}
+.field span{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.field input{width:100%;padding:12px;border-radius:10px;background:rgba(0,0,0,.25);border:1px solid var(--line);color:var(--cream);font:16px "DM Sans",sans-serif}
+.field input:focus{outline:2px solid var(--brass);outline-offset:0}
+
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--cream);color:#1a1a1a;padding:10px 16px;border-radius:999px;font-size:13px;font-weight:500;z-index:40;display:none;max-width:92vw;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.toast.on{display:block}
+.foot{text-align:center;font-size:12px;color:#4a2e17;padding:18px 10px 8px;font-weight:500}
+.foot button{color:#4a2e17;text-decoration:underline;font-size:12px;font-weight:500;padding:10px;margin-top:2px}
+.stale{color:#7a1f19;font-weight:700}
+</style>
+</head>
+<body>
+<div class="room">
+<main class="table">
+  <header class="hero">
+    <div class="hero-top">
+      <img class="logo" src="logo.png" alt="The Bend · Wilmington · Ogden">
+      <button class="whoami" id="whoami" hidden><svg class="ico" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><b>Commissioner</b> · Sign out</button>
+    </div>
+    <div>
+      <div class="script">Shuffleboard League</div>
+      <div class="hero-sub" id="hero-sub">Tuesdays at The Parlour House</div>
+    </div>
+  </header>
+  <div class="zones" aria-hidden="true">
+    <div>3</div><div>2</div><div>1</div>
+    <span class="bpuck blue" style="left:12%;top:-1px;transform:rotate(-14deg)"><i><img src="logo.png" alt=""></i></span>
+    <span class="bpuck red" style="left:70%;top:1px;transform:rotate(9deg)"><i><img src="logo.png" alt=""></i></span>
+    <span class="bpuck red" style="left:28%;top:36px;transform:rotate(22deg)"><i><img src="logo.png" alt=""></i></span>
+    <span class="bpuck blue" style="left:60%;top:55px;transform:rotate(-6deg)"><i><img src="logo.png" alt=""></i></span>
+  </div>
+
+  <section class="view on" id="v-tonight"></section>
+
+  <section class="view" id="v-standings">
+    <div class="eyebrow">Standings</div>
+    <div class="h1" id="stand-title"></div>
+    <div class="h1-sub" id="stand-sub">Ranked by win % · ties broken by point differential</div>
+    <div class="card pad note" id="pending-card" style="margin-bottom:10px">
+      <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+      <span id="pending-note"></span>
+    </div>
+    <div class="card" style="overflow:hidden">
+      <table class="stand"><thead><tr><th>#</th><th>Team</th><th>W–L</th><th>PF</th><th>PA</th><th>+/−</th></tr></thead><tbody id="stand-body"></tbody></table>
+    </div>
+  </section>
+
+  <section class="view" id="v-schedule">
+    <div class="eyebrow">Schedule</div>
+    <div class="h1" id="sched-title"></div>
+    <div class="h1-sub">Every team plays every other team once · 2 games per match</div>
+    <div id="sched-list"></div>
+  </section>
+
+  <section class="view" id="v-teams">
+    <div class="eyebrow">Teams</div>
+    <div class="h1" id="teams-title"></div>
+    <div class="h1-sub">Tap “My team” to highlight yours on this phone</div>
+    <div id="team-list"></div>
+  </section>
+
+  <section class="view" id="v-dues">
+    <div class="eyebrow">Commissioners only</div>
+    <div class="h1" id="dues-title">League dues</div>
+    <div class="h1-sub">Only Stephen and Rod can see this tab</div>
+    <div class="card pad">
+      <div class="m-head" style="margin:0"><span class="time" id="dues-count"></span><span class="pill next" id="dues-amt"></span></div>
+      <div class="prog"><i id="dues-bar"></i></div>
+      <div class="btns">
+        <button class="btn sm" id="unpaid-only" aria-pressed="false">Show unpaid only</button>
+        <button class="btn sm" id="copy-unpaid">Copy unpaid list</button>
+      </div>
+    </div>
+    <div class="card pad note" style="margin-bottom:10px">
+      <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+      <span><b>The bar collects dues, cash preferred.</b> Tap a name once the bar confirms that person paid. Tap again to undo.</span>
+    </div>
+    <div id="dues-list"></div>
+  </section>
+
+  <div class="foot">
+    The Bend · 7227 Market St · Wilmington, NC
+    <div id="stale" class="stale" hidden></div>
+    <button id="signin-link" hidden>Commissioner sign-in</button>
+  </div>
+</main>
+</div>
+
+<nav class="tabbar"><div class="tabbar-in">
+  <button class="tab on" data-v="tonight"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/></svg>Tonight</button>
+  <button class="tab" data-v="standings"><svg class="ico" viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>Standings</button>
+  <button class="tab" data-v="schedule"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Schedule</button>
+  <button class="tab" data-v="teams"><svg class="ico" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg>Teams</button>
+  <button class="tab" data-v="dues" hidden><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1.2-1.7-2-3-2-1.7 0-3 .9-3 2.2 0 3 6 1.6 6 4.6 0 1.3-1.3 2.2-3 2.2-1.4 0-2.6-.8-3-2M12 6v1.5M12 16.5V18"/></svg>Dues</button>
+</div></nav>
+
+<!-- score editor (commissioners) -->
+<div class="scrim" id="edit"><div class="sheet">
+  <div class="grab"></div>
+  <h2 id="ed-title"></h2>
+  <div class="sub" id="ed-sub"></div>
+  <div class="seg"><button class="on" data-g="0">Game 1</button><button data-g="1">Game 2</button></div>
+  <div class="scorer">
+    <div class="side" id="side-0"><div class="nm"><span class="puck red"></span><span id="ed-n0"></span></div>
+      <input class="big" id="s0" type="number" inputmode="numeric" min="0" max="40" placeholder="–" aria-label="Red score">
+      <div class="adds"><button data-t="0" data-n="1">+1</button><button data-t="0" data-n="2">+2</button><button data-t="0" data-n="3">+3</button><button data-t="0" data-n="4">+4</button></div>
+      <button class="minus" data-t="0" data-n="-1">Oops, −1</button></div>
+    <div class="side" id="side-1"><div class="nm"><span class="puck blue"></span><span id="ed-n1"></span></div>
+      <input class="big" id="s1" type="number" inputmode="numeric" min="0" max="40" placeholder="–" aria-label="Blue score">
+      <div class="adds"><button data-t="1" data-n="1">+1</button><button data-t="1" data-n="2">+2</button><button data-t="1" data-n="3">+3</button><button data-t="1" data-n="4">+4</button></div>
+      <button class="minus" data-t="1" data-n="-1">Oops, −1</button></div>
+  </div>
+  <div class="banner" id="ed-banner" hidden></div>
+  <div class="savestate" id="ed-save"></div>
+  <div class="btns"><button class="btn ghost" id="ed-clear">Clear this game</button><button class="btn primary" style="flex:1;justify-content:center" data-close>Done</button></div>
+</div></div>
+
+<!-- sign-in (commissioners) -->
+<div class="scrim" id="signin"><div class="sheet">
+  <div class="grab"></div>
+  <h2>Commissioner sign-in</h2>
+  <div class="sub">For the league commissioners. Everyone else can just view the site.</div>
+  <form id="signin-form">
+    <label class="field"><span>Email</span><input type="email" id="si-email" autocomplete="username" required></label>
+    <label class="field"><span>Password</span><input type="password" id="si-pass" autocomplete="current-password" required></label>
+    <div class="banner err" id="si-err" hidden></div>
+    <div class="btns"><button class="btn primary block" type="submit" id="si-go">Sign in</button><button class="btn ghost block" type="button" data-close>Cancel</button></div>
+  </form>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
