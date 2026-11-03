@@ -341,7 +341,16 @@ $("#signin-form").onsubmit = async e => {
   const go = $("#si-go"); go.disabled = true; go.textContent = "Signing in…";
   const {error} = await sb.auth.signInWithPassword({email: $("#si-email").value.trim(), password: $("#si-pass").value});
   go.disabled = false; go.textContent = "Sign in";
-  if (error){ const er = $("#si-err"); er.hidden = false; er.textContent = "That email and password didn't match. Try again."; return; }
+  if (error){
+    const er = $("#si-err"), code = error.code || "", msg = String(error.message || "");
+    er.hidden = false;
+    if (code === "email_not_confirmed" || /not confirmed/i.test(msg)) er.textContent = "This login exists but was never confirmed. A commissioner needs to fix it in Supabase.";
+    else if (code === "invalid_credentials" || /invalid login/i.test(msg)) er.textContent = "Wrong email or password. Check the spelling (no spaces) and try again.";
+    else if (/rate|too many/i.test(code + msg)) er.textContent = "Too many tries. Wait a few minutes, then try again.";
+    else er.textContent = "Couldn't sign in: " + msg;
+    console.warn("sign-in failed", error);
+    return;
+  }
   $("#si-pass").value = ""; closeSheet($("#signin")); toast("Signed in. Tap any match to enter scores.");
 };
 $("#whoami").onclick = async () => { await sb.auth.signOut(); toast("Signed out"); };
