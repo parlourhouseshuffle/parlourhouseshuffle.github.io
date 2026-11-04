@@ -328,7 +328,7 @@ function renderTrophy(){
   CHAMPS.forEach(c => { let g = groups.find(x => x.label === c.season_label); if (!g) groups.push(g = {label:c.season_label, rows:[]}); g.rows.push(c); });
   h += groups.map(g => `<div class="card pad champ-season"><div class="cs-head"><span class="wk">${esc(g.label)}</span></div>
     ${g.rows.map(c => `<button class="cs-row" data-champ="${c.id}"><span class="cs-title">${esc(c.title)}</span><span class="cs-team">${esc(c.team)}${c.players ? `<span class="sub">${esc(c.players)}</span>` : ""}</span></button>`).join("")}</div>`).join("");
-  if (!groups.length) h += `<div class="card pad note">${I.star}<span>No past champions yet. Add Seasons 1 and 2 so they're remembered here.</span></div>`;
+  if (!groups.length) h += `<div class="card pad note">${I.star}<span>Starting with Fall 2026, each season's league and tournament champions will be added here.</span></div>`;
   h += `<button class="btn block" id="champ-add">${I.trophy} Add a champion</button>`;
   $("#v-trophy").innerHTML = h;
   $(".bracket-wrap").scrollLeft = keepScroll;
