@@ -204,6 +204,55 @@ button.srow:active{background:rgba(255,255,255,.06)}
 .field input{width:100%;padding:12px;border-radius:10px;background:rgba(0,0,0,.25);border:1px solid var(--line);color:var(--cream);font:16px "DM Sans",sans-serif}
 .field input:focus{outline:2px solid var(--brass);outline-offset:0}
 
+/* open slots + moves */
+.pill.openp{background:rgba(143,214,181,.15);color:#8fd6b5}
+.openslot{border-style:dashed;border-color:rgba(143,214,181,.45)}
+.openslot .note .ico{color:#8fd6b5}
+.openlbl{color:#8fd6b5;font-weight:700}
+.team-btns{display:flex;flex-direction:column;gap:6px;flex:none;align-items:stretch}
+.slotbox{margin-top:16px;padding-top:2px;border-top:1px solid var(--line)}
+.eyebrow.light{color:var(--muted);opacity:1;margin:14px 0 6px}
+.when{font-size:14px;color:var(--muted)}
+.when b{color:var(--cream)}
+.movebox{margin-top:12px}
+.field select{width:100%;padding:12px;border-radius:10px;background:rgba(0,0,0,.25);border:1px solid var(--line);color:var(--cream);font:16px "DM Sans",sans-serif;-webkit-appearance:none;appearance:none}
+.field input[type=date]{min-height:48px}
+.pickrow{display:flex;gap:10px;width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card);margin-bottom:8px;text-align:left;font-size:14px;min-height:48px;align-items:center}
+.pickrow .pr-when{font:600 13px Oswald,sans-serif;color:var(--brass);min-width:70px;flex:none}
+
+/* tournament bracket */
+.bcard{overflow:hidden}
+.bracket-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;padding:14px 0 6px}
+.bracket{position:relative;display:flex;gap:24px;width:max-content;padding:0 14px}
+.round{width:138px;flex:none;position:relative;z-index:1}
+.round.champ-col{width:122px}
+.rh{font:600 11px Oswald,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);text-align:center;margin-bottom:8px}
+.rcol{height:304px;display:flex;flex-direction:column;justify-content:space-around}
+.bbox{background:#16302f;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.bbox.ghost{visibility:hidden}
+.bl{display:flex;align-items:center;gap:6px;width:100%;height:30px;padding:0 8px;font-size:12.5px;text-align:left;color:var(--cream)}
+.bl+.bl{border-top:1px solid var(--line)}
+.bl .sd{font:600 11px Oswald,sans-serif;color:var(--dim);min-width:14px;text-align:right;flex:none}
+.bl .bn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bl .ico{width:14px;height:14px;flex:none}
+.bl.win{color:var(--brass);font-weight:700;background:var(--brass-soft)}
+.bl.lose{color:var(--dim)}
+.bl.tbd{color:var(--dim);font-style:italic;font-size:12px}
+.champbox{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:10px 8px;min-height:61px;text-align:center;font:600 14px Oswald,sans-serif;letter-spacing:.03em;color:var(--brass);border-color:rgba(212,170,85,.45)}
+.champbox .ico{width:22px;height:22px}
+.links{position:absolute;left:0;top:0;pointer-events:none;z-index:0}
+.links path{fill:none;stroke:rgba(245,236,220,.22);stroke-width:1.5}
+.links path.on{stroke:var(--brass);stroke-width:2}
+.bfoot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:2px 14px 10px;font-size:12px;color:var(--dim)}
+
+/* trophy case */
+.champ-season{padding:12px 14px}
+.cs-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.cs-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;width:100%;padding:9px 0;border-top:1px solid var(--line);text-align:left;font-size:14px}
+.cs-title{color:var(--muted);font-size:13px;flex:none}
+.cs-team{font-weight:700;text-align:right;min-width:0}
+.cs-team .sub{display:block;font-weight:400;color:var(--muted);font-size:12px}
+
 .toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--cream);color:#1a1a1a;padding:10px 16px;border-radius:999px;font-size:13px;font-weight:500;z-index:40;display:none;max-width:92vw;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.4)}
 .toast.on{display:block}
 .foot{text-align:center;font-size:12px;color:#4a2e17;padding:18px 10px 8px;font-weight:500}
@@ -261,6 +310,8 @@ button.srow:active{background:rgba(255,255,255,.06)}
     <div id="team-list"></div>
   </section>
 
+  <section class="view" id="v-trophy"></section>
+
   <section class="view" id="v-dues">
     <div class="eyebrow">Commissioners only</div>
     <div class="h1" id="dues-title">League dues</div>
@@ -293,6 +344,7 @@ button.srow:active{background:rgba(255,255,255,.06)}
   <button class="tab" data-v="standings"><svg class="ico" viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-6"/></svg>Standings</button>
   <button class="tab" data-v="schedule"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Schedule</button>
   <button class="tab" data-v="teams"><svg class="ico" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg>Teams</button>
+  <button class="tab" data-v="trophy" hidden><svg class="ico" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 5M17 6h3a3 3 0 0 1-3 5"/></svg>Trophy</button>
   <button class="tab" data-v="dues" hidden><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1.2-1.7-2-3-2-1.7 0-3 .9-3 2.2 0 3 6 1.6 6 4.6 0 1.3-1.3 2.2-3 2.2-1.4 0-2.6-.8-3-2M12 6v1.5M12 16.5V18"/></svg>Dues</button>
 </div></nav>
 
@@ -314,7 +366,60 @@ button.srow:active{background:rgba(255,255,255,.06)}
   </div>
   <div class="banner" id="ed-banner" hidden></div>
   <div class="savestate" id="ed-save"></div>
+  <div class="slotbox">
+    <div class="eyebrow light">Time slot</div>
+    <div class="when" id="ed-when"></div>
+    <div class="btns">
+      <button class="btn sm" id="ed-move">Move to another time</button>
+      <button class="btn sm" id="ed-cancel">Cancel &amp; open this slot</button>
+      <button class="btn sm" id="ed-restore">Back to original time</button>
+    </div>
+    <div class="movebox" id="ed-movebox" hidden>
+      <label class="field"><span>New date</span><input type="date" id="mv-date"></label>
+      <label class="field"><span>New time</span><select id="mv-slot"></select></label>
+      <button class="btn primary block" id="mv-save">Save new time</button>
+    </div>
+  </div>
   <div class="btns"><button class="btn ghost" id="ed-clear">Clear this game</button><button class="btn primary" style="flex:1;justify-content:center" data-close>Done</button></div>
+</div></div>
+
+<!-- fill an open slot (commissioners) -->
+<div class="scrim" id="fill"><div class="sheet">
+  <div class="grab"></div>
+  <h2 id="fill-title">Fill open slot</h2>
+  <div class="sub">Tap the match moving into this time. If it was later tonight, its old time opens up.</div>
+  <div id="fill-list"></div>
+  <div class="btns"><button class="btn ghost block" data-close>Cancel</button></div>
+</div></div>
+
+<!-- edit a team (commissioners) -->
+<div class="scrim" id="team-ed"><div class="sheet">
+  <div class="grab"></div>
+  <h2>Edit team</h2>
+  <div class="sub">New names show everywhere on the site right away.</div>
+  <form id="team-form">
+    <label class="field"><span>Team name</span><input id="te-name" required maxlength="40"></label>
+    <label class="field"><span>Player 1</span><input id="te-p1" maxlength="40"></label>
+    <label class="field"><span>Player 2</span><input id="te-p2" maxlength="40"></label>
+    <div class="banner err" id="te-err" hidden></div>
+    <div class="btns"><button class="btn primary block" type="submit" id="te-save">Save</button><button class="btn ghost block" type="button" data-close>Cancel</button></div>
+  </form>
+</div></div>
+
+<!-- trophy case entry (commissioners) -->
+<div class="scrim" id="champ-ed"><div class="sheet">
+  <div class="grab"></div>
+  <h2 id="ce-head">Add a champion</h2>
+  <div class="sub">Shows in the trophy case on the Trophy tab.</div>
+  <form id="champ-form">
+    <label class="field"><span>Season</span><input id="ce-season" placeholder="e.g. Season 1 · Spring 2025" maxlength="40" required></label>
+    <label class="field"><span>Title</span><select id="ce-title"><option>League Champion</option><option>Tournament Champion</option></select></label>
+    <label class="field"><span>Team</span><input id="ce-team" list="ce-teams" maxlength="40" required></label>
+    <datalist id="ce-teams"></datalist>
+    <label class="field"><span>Players (optional)</span><input id="ce-players" maxlength="60"></label>
+    <div class="banner err" id="ce-err" hidden></div>
+    <div class="btns"><button class="btn primary block" type="submit">Save</button><button class="btn ghost" type="button" id="ce-del">Delete</button><button class="btn ghost" type="button" data-close style="flex:1;justify-content:center">Cancel</button></div>
+  </form>
 </div></div>
 
 <!-- sign-in (commissioners) -->

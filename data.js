@@ -1,6 +1,6 @@
 // Season data. Used as the starting data and as a backup if the live database can't be reached.
 // Match rows: [week, slot (0 = 5:30 … 4 = 8:30), red team, blue team, game1 red, game1 blue, game2 red, game2 blue]  — null = not played
-window.SEASON = {"id": "2026-fall", "label": "Fall 2026", "start": "2026-09-15", "weeks": 9, "to": 21, "dues": 100, "slots": ["5:30", "6:15", "7:00", "7:45", "8:30"], "makeup": "Nov 17 – Dec 4", "tournament": "Sunday, Dec 6"};
+window.SEASON = {"id": "2026-fall", "label": "Fall 2026", "start": "2026-09-15", "weeks": 9, "to": 21, "dues": 100, "slots": ["5:30", "6:15", "7:00", "7:45", "8:30"], "makeup": "Nov 17 – Dec 4", "tournament": "Sunday, Dec 6", "commishNames": "Stephen or Rod"};
 window.SEED = {
   asOf: "2026-11-03",
   teams: [
